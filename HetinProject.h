@@ -4,5 +4,8 @@
 #pragma once
 
 #include <iostream>
+#include "SDL.h"
+#include "Settings.h"
+#include "game.h"
 
 // TODO: W tym miejscu przywołaj dodatkowe nagłówki wymagane przez program.
