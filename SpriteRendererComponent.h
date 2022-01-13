@@ -3,33 +3,35 @@
 #include "include/Component.h"
 #include "TextureManager.h"
 #include "libs/Vector2.h"
-
-
-
-class Renderer {
-
-};
+#include "Camera.h"
 
 class SpriteSheetAnimationRenderer : public Component {
 	SDL_Texture* spritesheet;
 	GridVector frames;
 	SDL_Rect frameSize;
 public:
-	void Render(GridVector position, GridVector frame) {
-		frame.x %= frames.x;
-		frame.y %= frames.y;
-		frameSize.x = frame.x * frameSize.w;
-		frameSize.y = frame.y * frameSize.h;
-		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize,
-			new SDL_Rect{ position.x, position.y, frameSize.w,frameSize.h }, NULL, NULL, SDL_FLIP_NONE);
+	void Color(SDL_Color color) {
+		SDL_SetTextureColorMod(spritesheet, color.r, color.g, color.b);
+		SDL_SetTextureAlphaMod(spritesheet, color.a);
 	}
-	void Render(GridVector position, GridVector frame, double angle) {
+	void Render(GridVector position, GridVector frame, float paralaxLevel = 1.0f) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		renderPosition = renderPosition * paralaxLevel;
 		frame.x %= frames.x;
 		frame.y %= frames.y;
 		frameSize.x = frame.x * frameSize.w;
 		frameSize.y = frame.y * frameSize.h;
 		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize,
-			new SDL_Rect{ position.x, position.y, frameSize.w,frameSize.h }, angle, NULL, SDL_FLIP_NONE);
+			new SDL_Rect{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h }, NULL, NULL, SDL_FLIP_NONE);
+	}
+	void Render(GridVector position, GridVector frame, double angle, float paralaxLevel = 1.0f) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		frame.x %= frames.x;
+		frame.y %= frames.y;
+		frameSize.x = frame.x * frameSize.w;
+		frameSize.y = frame.y * frameSize.h;
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize,
+			new SDL_Rect{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h }, angle, NULL, SDL_FLIP_NONE);
 	}
 	void Load(texturePath path, GridVector frames_) {
 		frames = frames_;
@@ -63,12 +65,14 @@ public:
 		SDL_QueryTexture(sprite, NULL, NULL, &spriteSize.x, &spriteSize.y);
 	}
 	void Render(GridVector position) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ position.x, position.y, spriteSize.x,spriteSize.y });
+			new SDL_Rect{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y });
 	}
 
 	void Render(GridVector position, double angle) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ position.x, position.y, spriteSize.x,spriteSize.y },angle,NULL, SDL_FLIP_NONE);
+			new SDL_Rect{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y },angle,NULL, SDL_FLIP_NONE);
 	}
 };

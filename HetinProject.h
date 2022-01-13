@@ -4,7 +4,7 @@
 #pragma once
 
 #include <iostream>
-#include "SDL.h"
+#include <SDL.h>
 #include "Settings.h"
 #include "game.h"
 

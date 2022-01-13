@@ -173,8 +173,6 @@ public:
 
 	}
 
-	void draw() {
-
-	}
+	
 
 } ColliderManager;

@@ -14,6 +14,7 @@ class ScreenHandleler {
 	bool IInitialize(const char* windowName, Vector2T<int> size);
 	void ISetBackgroundColor(SDL_Color color);
 	void IRender();
+	GridVector IGetWindowSize();
 
 public:
 	ScreenHandleler(const ScreenHandleler&) = delete;
@@ -26,6 +27,7 @@ public:
 	static SDL_Renderer* getRenderer() { return Get().IGetRenderer(); };
 	static bool Initialize(const char* windowName, Vector2T<int> size) {return Get().IInitialize(windowName, size); };
 	static void SetBackgroundColor(SDL_Color color) { Get().ISetBackgroundColor(color); };
+	static Vector2 GetWindowSize() { return Get().IGetWindowSize(); }
 	static void Render() { Get().IRender(); };
 
 	~ScreenHandleler();

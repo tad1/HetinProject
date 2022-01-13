@@ -1,6 +1,5 @@
 #pragma once
 #include "../Component.h"
-#include "../../Console.h"
 
 class ColliderComponent : public Component{
 public:

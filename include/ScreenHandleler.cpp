@@ -13,10 +13,11 @@ bool ScreenHandleler::IInitialize(const char* windowName, Vector2T<int> size)
 		return false;
 	}
 
-	window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.x, size.y, 0);
+	window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.x, size.y, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	return true;
 }
+
 
 void ScreenHandleler::ISetBackgroundColor(SDL_Color color)
 {
@@ -33,4 +34,12 @@ ScreenHandleler::~ScreenHandleler()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+}
+
+GridVector ScreenHandleler::IGetWindowSize()
+{
+
+	GridVector res;
+	SDL_GetWindowSize(window, &(res.x), &(res.y));
+	return res;
 }

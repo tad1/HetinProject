@@ -1,6 +1,5 @@
 #pragma once
 #include <cmath>
-#include "MyString.h"
 
 template <class T>
 class Vector2T {

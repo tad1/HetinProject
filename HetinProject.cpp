@@ -6,6 +6,8 @@
 #include "include/ScreenHandleler.h"
 #include "TextureManager.h"
 #include "tests/tests.h"
+#include "ColorPalete.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -13,10 +15,12 @@ Game game;
 
 int main(int argc, char* argv[])
 {
+
 	testAll();
 	ScreenHandleler::Initialize("Hetin",Vector2T<int>(1000,600));
-	ScreenHandleler::SetBackgroundColor(SDL_Color{ 100, 149, 237, 255 });
+	ScreenHandleler::SetBackgroundColor(colors[colorNames::SECONDARY_COLOR]);
 	
+	mainCamera.SetSize(ScreenHandleler::GetWindowSize());
 
 	game.start();
 	
