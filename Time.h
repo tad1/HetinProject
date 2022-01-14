@@ -12,6 +12,7 @@ private:
 	float unscaledTime_;
 	
 	float fixedDeltaTime_;
+	float fixedUnscaledDeltaTime_;
 	float fixedTime_;
 	float fixedUnscaledTime_;
 
@@ -27,12 +28,18 @@ public:
 	const float& unscaledTime;
 
 	const float& fixedDeltaTime;
+	const float& fixedUnscaledDeltaTime;
 	const float& fixedTime;
 	const float& fixedUnscaledTime;
 
 	const float& maximumDeltaTime;
 	const float& timeScale;
 	//readonly
+
+	void setTimeScale(float newTimeScale) {
+		timeScale_ = newTimeScale;
+		fixedDeltaTime_ = timeScale_ * fixedUnscaledDeltaTime;
+	}
 
 	void calculateDelta() {
 		int currentTick = SDL_GetTicks();
@@ -45,12 +52,13 @@ public:
 		if (unscaledDeltaTime_ > maximumDeltaTime_)
 			unscaledDeltaTime_ = maximumDeltaTime_;
 		deltaTime_ = unscaledDeltaTime_ * timeScale_;
+		unscaledTime_ += unscaledDeltaTime_;
 		time_ += deltaTime_;
 		
 	}
 
 	void calculateFixedTime() {
-		fixedUnscaledTime_ += unscaledDeltaTime_;
+		fixedUnscaledTime_ += fixedUnscaledDeltaTime_;
 		fixedTime_ += timeScale_ * unscaledDeltaTime_;
 	}
 
@@ -60,7 +68,8 @@ public:
 		unscaledDeltaTime_(0.01f),//100 pyhics update per seconds
 		unscaledTime_(0.0f),
 
-		fixedDeltaTime_(0.01f), //100 pyhics update per seconds
+		fixedDeltaTime_(0.01f),
+		fixedUnscaledDeltaTime_(0.01f), //100 pyhics update per seconds
 		fixedTime_(0.0f),
 		fixedUnscaledTime_(0.0f),
 
@@ -74,6 +83,7 @@ public:
 		unscaledTime(unscaledTime_),
 
 		fixedDeltaTime(fixedDeltaTime_),
+		fixedUnscaledDeltaTime(fixedUnscaledDeltaTime_),
 		fixedTime(fixedTime_),
 		fixedUnscaledTime(fixedUnscaledTime_),
 

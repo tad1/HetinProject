@@ -24,7 +24,7 @@ class CloudPool : public GenericPool<Cloud, 20> {
 public:
 	void Update(){
 		for (int i = 0; i < useCount; i++) {
-			pool[i].position.x += pool[i].horizontalDirection * Time.deltaTime;
+			pool[i].position.x += (float)pool[i].horizontalDirection * Time.deltaTime;
 		}
 	}
 
@@ -55,10 +55,11 @@ public:
 			position.y = Random::Number(0, LEVEL_HEIGHT - minHeight);
 			position.x = Random::Number(LEVEL_WIDTH);
 			type = Random::Number(typeCount);
-			horizontalDirection = Random::Number(20, 50);
+			horizontalDirection = Random::Number(10, 20);
 
 			pool[i].position = position;
 			pool[i].type = type;
+			pool[i].horizontalDirection = horizontalDirection;
 		}
 	}
 

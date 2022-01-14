@@ -24,6 +24,13 @@ public:
 		//for each children update position
 	}
 
+	Vector2 WorldPosition() {
+		if (parent != nullptr) {
+			return parent->WorldPosition() + position;
+		}
+		return position;
+	}
+
 	void SetParent(Transform& obj) {
 		assert(obj.parent != nullptr);
 		obj.children.push_back(this);
@@ -39,5 +46,9 @@ public:
 
 	Transform& GetChild(int index) {
 		return *children[index];
+	}
+
+	Transform() {
+		parent = nullptr;
 	}
 };

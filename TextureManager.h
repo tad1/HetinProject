@@ -55,6 +55,9 @@ SDL_Texture* loadBMPTexture(const char* path) {
 	SDL_SetColorKey(loadedSurface, SDL_TRUE, 0x000000);
 
 	newTexture = SDL_CreateTextureFromSurface(ScreenHandleler::getRenderer(), loadedSurface);
+	if (newTexture == NULL) {
+		printf("Load BMP Error: %s\n", SDL_GetError());
+	}
 	SDL_FreeSurface(loadedSurface);
 
 	return newTexture;

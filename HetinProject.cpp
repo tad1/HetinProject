@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 {
 
 	testAll();
-	ScreenHandleler::Initialize("Hetin",Vector2T<int>(1000,600));
+	ScreenHandleler::Initialize("Hetin",Vector2T<int>(1400,1000));
 	ScreenHandleler::SetBackgroundColor(colors[colorNames::SECONDARY_COLOR]);
 	
 	mainCamera.SetSize(ScreenHandleler::GetWindowSize());

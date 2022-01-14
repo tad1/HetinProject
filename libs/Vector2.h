@@ -111,17 +111,22 @@ public:
 
     
 
-    T SqrMagnitude() {
+    T QuadMagnitude() {
         return this->x * this->x + this->y * this->y;
     }
 
     T Magnitude() {
-        return sqrt(SqrMagnitude());
+        return sqrt(QuadMagnitude());
     }
 
     Vector2T<T> Normalize() {
         Vector2T<float> result = *this;
-        result /= result.magnitude();
+        if (result.Magnitude() < 0.00001f) {
+            result = 0.0f;
+        }
+        else {
+            result = result / result.Magnitude();
+        }
         return result;
     }
 
@@ -150,9 +155,16 @@ public:
     }
 
     template <class T2, class T3>
-    T Distance(Vector2T<T2> a, Vector2T<T3> b) {
-        Vector2T<T> result(a.x - b.x, a.y - b.y);
-        return result.SqrMagnitude();
+    static float Distancef(Vector2T<T2> a, Vector2T<T3> b) {
+        Vector2T<T> result(b.x - a.x, b.y - a.y);
+        return result.Magnitude();
+
+    }
+
+    template <class T2, class T3>
+    static Vector2T<T> Distance(Vector2T<T2> a, Vector2T<T3> b) {
+        Vector2T<T> result(b.x - a.x, b.y - a.y);
+        return result;
 
     }
 

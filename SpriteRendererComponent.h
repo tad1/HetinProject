@@ -40,6 +40,7 @@ public:
 		SDL_QueryTexture(spritesheet, NULL, NULL, &spriteSize.x, &spriteSize.y);
 		frameSize.w = spriteSize.x / frames.x;
 		frameSize.h = spriteSize.y / frames.y;
+		
 	}
 	void Load(char* path, GridVector frames_) {
 		frames = frames_;
@@ -56,6 +57,7 @@ class SpriteRenderer : public Component{
 	GridVector spriteSize;
 
 public:
+	//TODO: make one funciton call other
 	void Load(texturePath path) {
 		sprite = TextureManager.Add(path);
 		SDL_QueryTexture(sprite, NULL, NULL, &spriteSize.x, &spriteSize.y);
