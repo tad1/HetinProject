@@ -7,11 +7,11 @@ public:
 	Collider * collider;
 	ColliderComponent* collisionCol;
 
-	void OnCollisionEnter(ColliderComponent& col) {
-		collisionCol = &col;
-		col.collisionCol = this;
-		printf("Collision \n");
-	} //col stands for collider
+	void OnCollisionEnter(ColliderComponent* other) {
+		collisionCol = other;
+		if(other != nullptr)
+			other->collisionCol = this;
+	} 
 
 
 	ColliderComponent(Collider data, int layer, Vector2 offset = Vector2(0, 0));
@@ -23,6 +23,10 @@ public:
 	}
 	ColliderComponent(int layer);
 
+	/// <summary>
+	/// Setup collider for given layer
+	/// </summary>
+	/// <param name="layer"></param>
 	void SetCollider(int layer);
 };
 

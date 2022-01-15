@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "Console.h"
 
+/// <summary>
+/// Constant memory buffer
+/// </summary>
 class HotMemory_ {
 private:
 	bool inUse_;
@@ -16,7 +19,12 @@ public:
 	const int& memorySize;
 	const void* elements;
 
-
+	/// <summary>
+	/// Init buffer
+	/// </summary>
+	/// <param name="memory">pointer of memory</param>
+	/// <param name="bytes_">size of memory in bytes</param>
+	/// <returns></returns>
 	bool Init(void* memory, int bytes_) {
 		if (memory == nullptr) {
 			Console.LogError("HotMemory: nullreference to memory");
@@ -29,6 +37,11 @@ public:
 		return true;
 	}
 
+	/// <summary>
+	/// Append data to buffer
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="element"></param>
 	template <class T>
 	void Put(T element) {
 		if (elements == nullptr) {
@@ -44,6 +57,21 @@ public:
 
 	}
 
+	/// <summary>
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="index"></param>
+	/// <returns>data from buffer</returns>
+	template <class T>
+	T Get(int index) {
+		return ((T*)elements)[index];
+	}
+
+	/// <summary>
+	/// If HotMemory is not locked, setup buffer for desired type
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns>true on succes</returns>
 	template <class T>
 	bool Use() {
 		if (inUse) {
@@ -57,6 +85,9 @@ public:
 		return true;
 	}
 
+	/// <summary>
+	/// Unlocks buffer
+	/// </summary>
 	void Free() {
 		inUse_ = false;
 		count_ = 0;
@@ -85,5 +116,5 @@ public:
 
 };
 
-HotMemory_ HotMemory;
+static HotMemory_ HotMemory;
 

@@ -17,4 +17,5 @@ public:
 	void LogError(const char* message) {
 		printf("Error: %s\n", message);
 	}
-} Console;
+};
+static Console_ Console;

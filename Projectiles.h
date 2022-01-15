@@ -13,62 +13,89 @@ struct Bullet{
 	Vector2 position;
 };
 
+/// <summary>
+/// Semi-selfcare object pool for bullets
+/// </summary>
 template <int layerId, int size>
 class BulletPool : public GenericPool<Bullet,size>{
 public:
 	SpriteRenderer sprite;
 	Collider model;
+	Vector2 offset;
 	int layer;
 
 	void Update() {
-		for (int i = 0; i < POOL_SIZE; i++) {
-			if (inUse[i]) {
+		for (int i = 0; i < this->POOL_SIZE; i++) {
+			if (this->inUse[i]) {
 
-				if (pool[i].col.collisionCol != nullptr) {
-					ColliderManager.Return(pool[i].col.collider, layer);
-					inUse[i] = false;
+				if (this->pool[i].col.collisionCol != nullptr) {
+					//When bullet hitted something
+					ColliderManager.Return(this->pool[i].col.collider, layer);
+					this->pool[i].col.collider = nullptr;
+					this->inUse[i] = false;
 					continue;
 				}
-				if (pool[i].position.x < 0 || pool[i].position.y < 0
-					|| pool[i].position.x > LEVEL_WIDTH || pool[i].position.y > LEVEL_HEIGHT) {
+				if (this->pool[i].position.x < 0 || this->pool[i].position.y < SEA_LEVEL
+					|| this->pool[i].position.x > LEVEL_WIDTH || this->pool[i].position.y > LEVEL_HEIGHT) {
 					//When bullet is out of frame
-					ColliderManager.Return(pool[i].col.collider, layer);
-					inUse[i] = false;
+					ColliderManager.Return(this->pool[i].col.collider, layer);
+                    this->pool[i].col.collider = nullptr;
+                    this->inUse[i] = false;
 				}
 			}
 		}
 	}
 	void PhysicsUpdate() {
-		for (int i = 0; i < POOL_SIZE; i++) {
-			if (inUse[i]) {
-				Vector2 deltaPosition = pool[i].velocity * Time.fixedDeltaTime;
-				pool[i].position += deltaPosition;
-				pool[i].col.collider->circle.x += deltaPosition.x;
-				pool[i].col.collider->circle.y += deltaPosition.y;
+		for (int i = 0; i < this->POOL_SIZE; i++) {
+			if (this->inUse[i]) {
+				//Update bullet and collider position
+				Vector2 deltaPosition = this->pool[i].velocity * Time.fixedDeltaTime;
+                this->pool[i].position += deltaPosition;
+                this->pool[i].col.collider->circle.x += deltaPosition.x;
+                this->pool[i].col.collider->circle.y += deltaPosition.y;
 			}
 		}
 	}
 
 	void Render() {
-		for (int i = 0; i < POOL_SIZE; i++) {
-			if (inUse[i]) {
-				sprite.Render(pool[i].position);
+		for (int i = 0; i < this->POOL_SIZE; i++) {
+			if (this->inUse[i]) {
+				sprite.Render(this->pool[i].position);
 			}
 		}
 	}
 
+	/// <summary>
+	/// Clears all bullets
+	/// </summary>
+	void Reset() {
+		for (int i = 0; i < this->POOL_SIZE; i++) {
+            this->inUse[i] = false;
+			if (this->pool[i].col.collider != nullptr) {
+				ColliderManager.Return(this->pool[i].col.collider, layer);
+			}
+
+		}
+	}
+
+
+	/// <summary>
+	/// Creates Projectile at given position, with given velocity
+	/// </summary>
 	bool Projectile(Vector2 position_, Vector2 velocity_) {
 		static int colliderErrCount = 0;
-		printf("Bullet used: %d   time", colliderErrCount);
-		for (int i = 0; i < POOL_SIZE; i++) {
-			if (!inUse[i]) {
-				pool[i].col.SetCollider(layer);
-				if (pool[i].col.collider != nullptr) {
-				inUse[i] = true;
-				pool[i].position = position_;
-				pool[i].velocity = velocity_;
-				*pool[i].col.collider = model;
-				return true;
+		for (int i = 0; i < this->POOL_SIZE; i++) {
+			if (!this->inUse[i]) {
+                this->pool[i].col.SetCollider(layer);
+				if (this->pool[i].col.collider != nullptr) {
+                    this->inUse[i] = true;
+                    this->pool[i].position = position_;
+                    this->pool[i].velocity = velocity_;
+					model.circle.x = position_.x + offset.x;
+					model.circle.y = position_.y + offset.y;
+					model.component = &this->pool[i].col;
+					*this->pool[i].col.collider = model;
+					return true;
 				}
 			}
 		}
@@ -77,6 +104,9 @@ public:
 
 	BulletPool() {
 		layer = layerId;
+		model.circle.radius = 8;
+		model.circle.flag = CIRCLE_FLAG;
+		offset = Vector2(8, 8);
 	}
 };
 

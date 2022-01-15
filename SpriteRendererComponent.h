@@ -50,6 +50,13 @@ public:
 		frameSize.w = spriteSize.x / frames.x;
 		frameSize.h = spriteSize.y / frames.y;
 	}
+
+	GridVector GetSize() {
+		GridVector result;
+		result.x = frameSize.w;
+		result.y = frameSize.h;
+		return result;
+	}
 };
 
 class SpriteRenderer : public Component{
@@ -57,6 +64,11 @@ class SpriteRenderer : public Component{
 	GridVector spriteSize;
 
 public:
+	void Color(SDL_Color color_) {
+		SDL_SetTextureColorMod(sprite, color_.r, color_.g, color_.b);
+		SDL_SetTextureAlphaMod(sprite, color_.a);
+	}
+
 	//TODO: make one funciton call other
 	void Load(texturePath path) {
 		sprite = TextureManager.Add(path);
@@ -70,6 +82,21 @@ public:
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
 			new SDL_Rect{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y });
+	}
+
+	void RenderScaledCentered(GridVector position, float scale) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		GridVector outputSize = spriteSize * scale;
+		renderPosition -= outputSize / 2;
+		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
+			new SDL_Rect{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y });
+	}
+
+	void RenderScaled(GridVector position, GridVector scale) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		GridVector outputSize = spriteSize * scale;
+		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
+			new SDL_Rect{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y });
 	}
 
 	void Render(GridVector position, double angle) {

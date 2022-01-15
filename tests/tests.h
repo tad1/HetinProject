@@ -112,6 +112,8 @@ bool CollisionsTest() {
 	enemyBullet.name = "Enemy's bullet";
 
 	ColliderManager.checkCollisions(LAYER_PLAYER_BULLETS);
+	assert(enemyBullet.collisionCol != nullptr);
+	assert(bullet.collisionCol != nullptr);
 
 	ColliderManager.Return(enemy.collider, LAYER_ENEMY);
 	ColliderManager.Return(bullet.collider, LAYER_PLAYER_BULLETS);

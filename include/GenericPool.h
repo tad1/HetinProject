@@ -1,5 +1,9 @@
 #pragma once
 
+/// <summary>
+/// Generic object pool pattern
+/// </summary>
+/// <typeparam name="TObject"></typeparam>
 template <class TObject, int size>
 class GenericPool {
 public:

@@ -1,5 +1,8 @@
 #pragma once
 #include "../../HotMemory.h"
+#include "SDL.h"
+#include "../ScreenHandleler.h"
+#include "../../ColorPalete.h"
 
 class ColliderComponent;
 
@@ -20,7 +23,7 @@ public:
 	}
 
 	void Return(Collider* collider) {
-		inUse[colliders - collider] = false;
+		inUse[collider - colliders] = false;
 	}
 
 	void Init(int size_, Collider* location = nullptr) {
@@ -42,6 +45,52 @@ public:
 			}
 		}
 		
+	}
+
+	void Draw() {
+		for (int i = 0; i < size; i++) {
+			if (inUse[i]) {
+				GridVector startingPoint;
+				startingPoint.x = colliders[i].circle.x;
+				startingPoint.y = colliders[i].circle.y;
+				startingPoint = mainCamera.WorldToScreenPosition(startingPoint);
+				SDL_Point points[5];
+				//Circle
+				if (colliders[i].circle.flag == CIRCLE_FLAG) {
+					points[0].x = startingPoint.x;
+					points[0].y = startingPoint.y - colliders[i].circle.radius;
+
+					points[1].x = startingPoint.x + colliders[i].circle.radius;
+					points[1].y = startingPoint.y;
+
+					points[2].x = startingPoint.x;
+					points[2].y = startingPoint.y + colliders[i].circle.radius;
+
+					points[3].x = startingPoint.x - colliders[i].circle.radius;
+					points[3].y = startingPoint.y;
+
+					points[4] = points[0];
+
+				}
+				else {
+					//Rect
+					points[0].x = startingPoint.x;
+					points[0].y = startingPoint.y;
+
+					points[1].x = startingPoint.x + colliders[i].rect.w;
+					points[1].y = startingPoint.y;
+
+					points[2].x = startingPoint.x + colliders[i].rect.w;
+					points[2].y = startingPoint.y + colliders[i].rect.h;
+
+					points[3].x = startingPoint.x;
+					points[3].y = startingPoint.y + colliders[i].rect.h;
+
+					points[4] = points[0];
+				}
+				SDL_RenderDrawLines(ScreenHandleler::getRenderer(), points, 5);
+			}
+		}
 	}
 
 	Layer() {
@@ -130,6 +179,12 @@ public:
 		
 	}
 
+	void checkAllCollisions() {
+		for (int i = 0; i < LAYER_COUNT; i++) {
+			checkCollisions(i);
+		}
+	}
+
 	void checkCollisions(int layerID) {
 		HotMemory.Use<ColliderComponent*>();
 		Layer& currentLayer = layers[layerID];
@@ -164,15 +219,21 @@ public:
 			}
 		}
 
-		ColliderComponent* elements = (ColliderComponent*)HotMemory.elements;
+		ColliderComponent** elements = (ColliderComponent**)HotMemory.elements;
 		for (int i = 1; i < HotMemory.count; i += 2) {
-			elements[i - 1].OnCollisionEnter(elements[i]);
+			elements[i - 1]->OnCollisionEnter(elements[i]);
 		}
 
 		HotMemory.Free();
 
 	}
 
-	
+	void Draw() {
+		SDL_SetRenderDrawColor(ScreenHandleler::getRenderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);
+		for (int i = 0; i < LAYER_COUNT; i++) {
+			layers[i].Draw();
+		}
+		ScreenHandleler::SetBackgroundColor(colors[HEALTH_COLOR]);
+	}
 
 } ColliderManager;

@@ -6,6 +6,10 @@
 #include "Time.h"
 #include "include/Physics2D.h"
 
+
+/// <summary>
+/// Component which update GameObject position, and collider position if is passed
+/// </summary>
 class RigidbodyComponent : public Component{
 	ColliderComponent* collider;
 	
@@ -14,9 +18,6 @@ public:
 	bool useGravity;
 
 	void FixedUpdate() {
-		//if (useGravity) velocity += (Vector2)gravity * 1300.0f * Time.fixedDeltaTime;
-
-		Console.Log(velocity.ToString());
 		Vector2 moveDelta = velocity * Time.fixedDeltaTime * sign(Time.timeScale);
 		gameObject->transform.Translate(moveDelta);
 		if (collider != nullptr) {
@@ -25,11 +26,18 @@ public:
 		}
 	}
 
+	void SetCollider(ColliderComponent* collider_ = nullptr) {
+		collider = collider_;
+	}
+
 	RigidbodyComponent(ColliderComponent* collider_ = nullptr) {
 		collider = collider_;
 	}
 };
 
+/// <summary>
+/// Selfcare RigidBodyComponent object pool
+/// </summary>
 class RigidbodyComponentPool : public GenericPool<RigidbodyComponent, 1000> {
 public:
 	RigidbodyComponent* Get(GameObject* instance, ColliderComponent* collider_ = nullptr) {
@@ -37,6 +45,7 @@ public:
 			if (!inUse[i]) {
 				inUse[i] = true;
 				pool[i].gameObject = instance;
+				pool[i].SetCollider(collider_);
 				pool[i].velocity = Vector2(0, 0);
 				return &pool[i];
 			}
@@ -44,12 +53,19 @@ public:
 		return nullptr;
 	}
 
+	/// <summary>
+	/// Return Component to pool
+	/// </summary>
+	/// <param name="component"></param>
 	void Return(RigidbodyComponent* component) {
 		int index = pool - component;
 		if (index < 0 || index >= POOL_SIZE) return;
 		inUse[index] = false;
 	}
 
+	/// <summary>
+	/// Updates RigidBodyComponent with FixedDeltaTime
+	/// </summary>
 	void FixedUpdate() {
 		for (int i = 0; i < POOL_SIZE; i++) {
 			if (inUse[i]) {
@@ -57,4 +73,5 @@ public:
 			}
 		}
 	}
-} RigidbodyPool;
+};
+static RigidbodyComponentPool RigidbodyPool;

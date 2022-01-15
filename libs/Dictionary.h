@@ -8,7 +8,7 @@ struct MapElement {
 	TValue value;
 };
 
-//Effecient for data less or equal than 16bits 
+//Data structure similar to map
 template <class TKey, class TValue>
 class Dictionary {
 private:
@@ -53,20 +53,15 @@ public:
 	}
 
 	void Add(TKey key_, TValue value_) {
-		//TODO: optimalise
 		if (!ContainsKey(key_)) {
 			if (count >= size) Expand();
 			elements[count].key = key_;
 			elements[count].value = value_;
 			count++;
 		}
-		else {
-			//find index and set it
-		}
 	}
 
 	void Remove(TKey key) {
-
 		for (int i = 0; i < count; i++) {
 			if (elements[i].key == key) {
 				if (i < (count - 1)) {
@@ -81,6 +76,10 @@ public:
 		return elements[index].value;
 	}
 
+	void Clear() {
+		count = 0;
+	}
+
 	int GetCount() {
 		return count;
 	}
@@ -90,6 +89,7 @@ public:
 			if (elements[i].key == key)
 				return elements[i].value;
 		}
+		//Raise error
 		assert(false);
 	}
 };

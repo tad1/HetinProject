@@ -1,5 +1,9 @@
 #pragma once
 
+/// <summary>
+/// Implementation of vector, similar to vector<T> from standards
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template <class T>
 class Vector {
     static const int alloc_size = 10;

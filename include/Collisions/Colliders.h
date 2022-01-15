@@ -12,7 +12,7 @@ struct Circle {
 };
 
 template <class T>
-struct AABB {
+struct Rect {
 	T x, y, w, h;
 };
 
@@ -22,9 +22,19 @@ struct Collider {
 	ColliderComponent* component;
 	union {
 		struct Circle<collisionPrecision> circle;
-		struct AABB<collisionPrecision> rect;
+		struct Rect<collisionPrecision> rect;
 	};
 };
+
+void setColliderPosition(Collider& collider, collisionPrecision x, collisionPrecision y) {
+	collider.circle.x = x;
+	collider.circle.y = y;
+}
+
+void setColliderPosition(Collider& collider, Vector2T<collisionPrecision> position) {
+	collider.circle.x = position.x;
+	collider.circle.y = position.y;
+}
 
 void setCircleCollider(Collider& collider, collisionPrecision x, collisionPrecision y, collisionPrecision r) {
 	collider.circle.x = x;

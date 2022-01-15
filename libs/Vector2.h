@@ -1,6 +1,11 @@
 #pragma once
 #include <cmath>
+#include "MyString.h"
 
+/// <summary>
+/// Representation of vector in Cartesian coordinate system 
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template <class T>
 class Vector2T {
 public:
@@ -130,30 +135,53 @@ public:
         return result;
     }
 
-    const char* ToString() {
+    const char* toString() {
         //TODO: make dynamic
         char* result = new char[100];
         strcpy(result, "Vector2(");
-        strcat(result, String::ToString(this->x));
+        strcat(result, ToString(this->x));
         strcat(result, ",");
-        strcat(result, String::ToString(this->y));
+        strcat(result, ToString(this->y));
         strcat(result, ")");
         return (const char*)result;
     }
 
 #pragma region StaticMethods
+    /// <summary>
+    /// Return dot product; a dot b
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static T Dot(Vector2T<T2> a, Vector2T<T3> b) {
         return a.x * b.x + a.y * b.y;
     }
 
-    //TODO: upgrade if needed to convert into 3d vector
+    /// <summary>
+    /// Return cross product lenght (the area between vectors)
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static T Cross(Vector2T<T2> a, Vector2T<T3> b) {
-        return this->x * b.y - this->y * b.x;
+        return a.x * b.y - a.y * b.x;
 
     }
 
+    /// <summary>
+    /// Return distance between vectors in float
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static float Distancef(Vector2T<T2> a, Vector2T<T3> b) {
         Vector2T<T> result(b.x - a.x, b.y - a.y);
@@ -161,6 +189,14 @@ public:
 
     }
 
+    /// <summary>
+    /// Return distance between vector in vector
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static Vector2T<T> Distance(Vector2T<T2> a, Vector2T<T3> b) {
         Vector2T<T> result(b.x - a.x, b.y - a.y);
@@ -168,12 +204,28 @@ public:
 
     }
 
+    /// <summary>
+    /// Implementation of math lerp function
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="t"></param>
+    /// <returns></returns>
     template <class T2>
     static Vector2T<T> Lerp(Vector2T<T2> a, Vector2T<T2> b, float t) {
         Vector2T<T> direction(b.x - a.x, b.y - a.y);
         return a + (direction * t);
     }
 
+    /// <summary>
+    /// Return vector with minimal values from both vectors
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static Vector2T<T> Max(Vector2T<T2> a, Vector2T<T2> b) {
         Vector2T<T> result;
@@ -182,6 +234,14 @@ public:
         return result;
     }
 
+    /// <summary>
+    /// Return vector with maximal values from both vectors
+    /// </summary>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     template <class T2, class T3>
     static Vector2T<T> Min(Vector2T<T2> a, Vector2T<T2> b) {
         Vector2T<T> result;

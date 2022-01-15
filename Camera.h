@@ -12,9 +12,6 @@ public:
 	Transform* target;
 	Vector2 targetBorder;
 
-	void Render() {
-
-	}
 	Vector2 WorldToScreenPosition(Vector2 position) {
 		return position - transform.position + size;
 	}
@@ -22,7 +19,6 @@ public:
 	void Update() {
 		//Follow target
 		if (target) {
-			//TODO: special case when you are in border //smooth follow
 			transform.position = target->position;
 		}
 		//Clamp
@@ -43,5 +39,5 @@ public:
 	};
 };
 
-Camera mainCamera;
+static Camera mainCamera;
 

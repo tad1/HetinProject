@@ -1,5 +1,5 @@
 #pragma once
-#include <string.h>
+#include <cstring>
 
 
 template <class T>
@@ -31,7 +31,7 @@ struct CopyableString {
 	}
 
 	CopyableString<size>& operator = (char* arg) {
-		strcpy_s(&c_str[0], size, arg);
+        strncpy(&c_str[0], arg,size);
 		return *this;
 	}
 

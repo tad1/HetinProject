@@ -12,6 +12,9 @@ struct WAV_File {
 	Uint8* wavBuffer;
 };
 
+/// <summary>
+/// Loads and Mangages WAV files
+/// </summary>
 class WAV_Loader_ {
 
 private:
@@ -21,12 +24,22 @@ public:
 		return wavs[path];
 	}
 
+	/// <summary>
+	/// Load WAV file
+	/// </summary>
+	/// <param name="path"></param>
+	/// <returns>WAV file info and buffer location</returns>
 	WAV_File Add(char* path) {
 		audioPath wav_path = { "" };
 		wav_path = path;
 		return Add(wav_path);
 	}
 
+	/// <summary>
+	/// Load WAV file
+	/// </summary>
+	/// <param name="path"></param>
+	/// <returns>WAV file info and buffer location</returns>
 	WAV_File Add(audioPath path) {
 		if (wavs.ContainsKey(path)) {
 			return wavs[path];
@@ -42,8 +55,12 @@ public:
 			SDL_FreeWAV(wavs.Get(i).wavBuffer);
 		}
 	}
-} WAV_Loader;
+};
+static WAV_File WAV_Loader;
 
+/// <summary>
+/// Manage audio devices and play loaded WAV files
+/// </summary>
 class SDL_Audio {
 	SDL_AudioDeviceID deviceId;
 	SDL_AudioSpec currentWavSpec;
@@ -56,9 +73,14 @@ public:
 	}
 
 	~SDL_Audio() {
-		if(deviceId != NULL)
+		if (deviceId != NULL)
 			SDL_CloseAudioDevice(deviceId);
 	}
+
+	/// <summary>
+	/// Add audio to queue and unpause playback
+	/// </summary>
+	/// <param name="wav">WAV File info</param>
 	void Play(WAV_File wav) {
 		if (deviceId == NULL) {
 			currentWavSpec = wav.wavSpec;
@@ -69,5 +91,6 @@ public:
 		}
 		SDL_PauseAudioDevice(deviceId, 0);
 	}
-} Audio;
+};
+static SDL_Audio Audio;
 

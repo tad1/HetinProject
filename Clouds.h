@@ -13,8 +13,13 @@ public:
 	int horizontalDirection;
 };
 
+
+/// <summary>
+/// Selfcaring object pool for clouds, populate clouds, moves them, and render
+/// </summary>
 class CloudPool : public GenericPool<Cloud, 20> {
 	SpriteSheetAnimationRenderer renderer;
+	GridVector spriteSize;
 	SDL_Color colorMod;
 	int useCount;
 	float paralaxEffect = 0.9f;
@@ -22,9 +27,19 @@ class CloudPool : public GenericPool<Cloud, 20> {
 	int minHeight = 500; //pixels
 	
 public:
+
+	/// <summary>
+	/// Moves clouds
+	/// </summary>
 	void Update(){
 		for (int i = 0; i < useCount; i++) {
 			pool[i].position.x += (float)pool[i].horizontalDirection * Time.deltaTime;
+			if (pool[i].position.x > LEVEL_WIDTH) {
+				pool[i].position.x -= LEVEL_WIDTH + spriteSize.x;
+			}
+			else if (pool[i].position.x < -spriteSize.x) {
+				pool[i].position.x += LEVEL_WIDTH + spriteSize.x;
+			}
 		}
 	}
 
@@ -35,18 +50,34 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Set paralax effect according to one parameter.
+	/// The lower parameter is, the slower background moves
+	/// </summary>
+	/// <param name="paralaxLevel_"></param>
 	void SetParalaxLevel(float paralaxLevel_) {
 		paralaxEffect = paralaxLevel_;
 	}
 
+	/// <summary>
+	/// Set color modulation for all clouds
+	/// </summary>
+	/// <param name="color"></param>
 	void SetColorMod(SDL_Color color) {
 		colorMod = color;
 	}
 
+	/// <summary>
+	/// Loads spritesheet and number of clouds in texture
+	/// Spritesheet must have one dimention (x dimension) of frames
+	/// </summary>
+	/// <param name="path"></param>
+	/// <param name="typeCount_"></param>
 	void Init(char* path, int typeCount_) {
 		colorMod = colors[CLOUD_COLOR];
 		typeCount = typeCount_;
 		renderer.Load(path, GridVector(typeCount,1));
+		spriteSize = renderer.GetSize();
 		useCount = 20;
 		GridVector position;
 		int type;

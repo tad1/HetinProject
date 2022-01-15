@@ -21,32 +21,74 @@ private:
 
 public:
 
-	//readonly
+#pragma region ReadOnly
+
+
+	/// <summary>
+	/// Scaled duration of frame
+	/// </summary>
 	const float& deltaTime;
+	/// <summary>
+	/// Scaled game time from the start
+	/// </summary>
 	const float& time;
+	/// <summary>
+	/// Real time duration of frame
+	/// </summary>
 	const float& unscaledDeltaTime;
+	/// <summary>
+	/// Real game time from the start
+	/// </summary>
 	const float& unscaledTime;
 
+	/// <summary>
+	/// Scaled timestep between physics update
+	/// </summary>
 	const float& fixedDeltaTime;
+	/// <summary>
+	/// Real time timestep between physics update
+	/// </summary>
 	const float& fixedUnscaledDeltaTime;
+	/// <summary>
+	/// Scaled game time of physics 
+	/// </summary>
 	const float& fixedTime;
+	/// <summary>
+	/// Real game time of physics
+	/// </summary>
 	const float& fixedUnscaledTime;
 
+	/// <summary>
+	/// Maximum duration of frame, to prevent big time jump
+	/// </summary>
 	const float& maximumDeltaTime;
-	const float& timeScale;
-	//readonly
 
+	/// <summary>
+	/// Scale of time represented in seconds per seconds.
+	/// You can set it to negative, to rewind time
+	/// </summary>
+	const float& timeScale;
+#pragma endregion
+
+	/// <summary>
+	/// Set scale of time represented in seconds per seconds.
+	/// You can set it to negative, to rewind time
+	/// </summary>
+	/// <param name="newTimeScale"></param>
 	void setTimeScale(float newTimeScale) {
 		timeScale_ = newTimeScale;
 		fixedDeltaTime_ = timeScale_ * fixedUnscaledDeltaTime;
 	}
 
+	/// <summary>
+	/// Calculate delta time, and time based on previous call
+	/// </summary>
 	void calculateDelta() {
 		int currentTick = SDL_GetTicks();
 		cycleTime = currentTick - lastTick; //delta in miliseconds
 		lastTick = currentTick;
 
-		unscaledDeltaTime_ = cycleTime * 0.001; //convert to float;
+		unscaledDeltaTime_ = cycleTime * 0.001; //convert to seconds;
 
 
 		if (unscaledDeltaTime_ > maximumDeltaTime_)
@@ -65,11 +107,11 @@ public:
 	Time_() :
 		deltaTime_(0.0f),
 		time_(0.0f),
-		unscaledDeltaTime_(0.01f),//100 pyhics update per seconds
+		unscaledDeltaTime_(0.01f),//100 physics update per seconds
 		unscaledTime_(0.0f),
 
 		fixedDeltaTime_(0.01f),
-		fixedUnscaledDeltaTime_(0.01f), //100 pyhics update per seconds
+		fixedUnscaledDeltaTime_(0.01f), //100 physics update per seconds
 		fixedTime_(0.0f),
 		fixedUnscaledTime_(0.0f),
 
@@ -97,11 +139,7 @@ public:
 		lastTick = SDL_GetTicks();
 
 
-
-		//init references
-		
-
-
-
 	}
-} Time;
+};
+
+static Time_ Time;

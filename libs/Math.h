@@ -10,6 +10,11 @@ inline T clamp(T value, T min, T max) {
 	return value;
 }
 
+float lerp(float a, float b, float t) {
+	float delta = b - a;
+	return a + (delta * t);
+}
+
 int sign(int x) {
 	return (x > 0) - (x < 0);
 }
