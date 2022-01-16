@@ -136,7 +136,6 @@ public:
     }
 
     const char* toString() {
-        //TODO: make dynamic
         char* result = new char[100];
         strcpy(result, "Vector2(");
         strcat(result, ToString(this->x));

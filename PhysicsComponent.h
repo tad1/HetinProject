@@ -20,7 +20,7 @@ public:
 	void FixedUpdate() {
 		Vector2 moveDelta = velocity * Time.fixedDeltaTime * sign(Time.timeScale);
 		gameObject->transform.Translate(moveDelta);
-		if (collider != nullptr) {
+		if (collider != nullptr && collider->collider != nullptr) {
 			collider->collider->circle.x += moveDelta.x;
 			collider->collider->circle.y += moveDelta.y;
 		}

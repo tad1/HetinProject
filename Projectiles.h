@@ -27,15 +27,8 @@ public:
 		for (int i = 0; i < this->POOL_SIZE; i++) {
 			if (this->inUse[i]) {
 
-				if (this->pool[i].col.collisionCol != nullptr) {
-					//When bullet hitted something
-					ColliderManager.Return(this->pool[i].col.collider, layer);
-					this->pool[i].col.collider = nullptr;
-					this->inUse[i] = false;
-					continue;
-				}
-				if (this->pool[i].position.x < 0 || this->pool[i].position.y < SEA_LEVEL
-					|| this->pool[i].position.x > LEVEL_WIDTH || this->pool[i].position.y > LEVEL_HEIGHT) {
+				if (this->pool[i].position.x < 0 || this->pool[i].position.y < 0
+					|| this->pool[i].position.x > LEVEL_WIDTH || this->pool[i].position.y > LEVEL_HEIGHT - SEA_LEVEL) {
 					//When bullet is out of frame
 					ColliderManager.Return(this->pool[i].col.collider, layer);
                     this->pool[i].col.collider = nullptr;
@@ -47,12 +40,20 @@ public:
 	void PhysicsUpdate() {
 		for (int i = 0; i < this->POOL_SIZE; i++) {
 			if (this->inUse[i]) {
+				if (this->pool[i].col.collisionCol != nullptr) {
+					//When bullet hitted something
+					ColliderManager.Return(this->pool[i].col.collider, layer);
+					this->pool[i].col.collider = nullptr;
+					this->inUse[i] = false;
+					continue;
+				}
+
 				//Update bullet and collider position
 				Vector2 deltaPosition = this->pool[i].velocity * Time.fixedDeltaTime;
                 this->pool[i].position += deltaPosition;
                 this->pool[i].col.collider->circle.x += deltaPosition.x;
                 this->pool[i].col.collider->circle.y += deltaPosition.y;
-			}
+			} 
 		}
 	}
 

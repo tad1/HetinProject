@@ -40,6 +40,20 @@ public:
 	}
 
 	/// <summary>
+	/// Render sprite on screen
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="frame"></param>
+	void RenderOnScreen(GridVector position, GridVector frame) {
+		frame.x %= frames.x;
+		frame.y %= frames.y;
+		frameSize.x = frame.x * frameSize.w;
+		frameSize.y = frame.y * frameSize.h;
+		SDL_Rect destination{ position.x, position.y, frameSize.w,frameSize.h };
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, NULL, NULL, SDL_FLIP_NONE);
+	}
+
+	/// <summary>
 	/// Render rotated sprite in world
 	/// </summary>
 	/// <param name="position"></param>

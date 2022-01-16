@@ -8,6 +8,7 @@ public:
 	ColliderComponent* collisionCol;
 
 	void OnCollisionEnter(ColliderComponent* other) {
+		if (collider == nullptr) return;
 		collisionCol = other;
 		if(other != nullptr)
 			other->collisionCol = this;
@@ -27,6 +28,6 @@ public:
 	/// Setup collider for given layer
 	/// </summary>
 	/// <param name="layer"></param>
-	void SetCollider(int layer);
+	bool SetCollider(int layer);
 };
 

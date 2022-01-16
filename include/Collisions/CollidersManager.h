@@ -251,15 +251,16 @@ public:
 				//Checking collisions
 
 				Collider* source, * target;
-				source = layers[layerID].colliders;
-				target = layers[i].colliders;
+				
 
 				for (int sourceIndex = 0; sourceIndex < layersInfo[layerID].size; sourceIndex++)
 					if (layers[layerID].inUse[sourceIndex]) {
 						{	
+							source = &layers[layerID].colliders[sourceIndex];
 							//Test each to each collision
 							//Not optimalised but it does its work
 							for (int targetIndex = 0; targetIndex < layersInfo[i].size; targetIndex++) {
+								target = &layers[i].colliders[targetIndex];
 								if (layers[i].inUse[targetIndex]) {
 									//Check collision
 									if (isColliding(*source, *target)) {
@@ -268,9 +269,7 @@ public:
 										HotMemory.Put<ColliderComponent*>(target->component);
 									}
 								}
-								target++;
 							}
-							source++;
 						}
 					}
 

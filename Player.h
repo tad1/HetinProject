@@ -4,6 +4,7 @@
 #include "SpriteRendererComponent.h"
 #include "PhysicsComponent.h"
 #include "Projectiles.h"
+#include "Score.h"
 
 /// <summary>
 /// Playable character
@@ -36,11 +37,17 @@ public:
 		if (collider.collisionCol != nullptr) {
 			if (invicibleTime <= 0.0f) {
 				onDamage(4.0f);
+				mainScore.removeScore(5);
 				invicibleTime += maxInvicibleTime;
 			}
 			collider.collisionCol = nullptr;
 		}
 
+		//Check if player is outsite level
+		if (transform.position.x < 0 || transform.position.x > LEVEL_WIDTH
+			|| transform.position.y < 0 || transform.position.y > LEVEL_HEIGHT - SEA_LEVEL) {
+			hp -= 5 * Time.deltaTime;
+		}
 
 		reloadTime -= Time.deltaTime;
 		if (reloadTime < 0) {
@@ -67,7 +74,6 @@ public:
 
 		}
 
-		//
 		if (Input.isKeyPressed(SDL_SCANCODE_X)) {
 			//Player is shooting
 			if (reloadTime <= 0) {
@@ -170,7 +176,7 @@ public:
 
 	Player() {
 		collider.SetCollider(LAYER_PLAYER);
-		startingPosition = Vector2(3000, 500);
+		startingPosition = Vector2(3000, 1800);
 		angle = -M_PI/2; //-90 deg in radians
 		frame = GridVector(0, 0); //starting frame
 		maxSpeed = 200.0f; //px per second

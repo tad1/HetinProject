@@ -93,4 +93,42 @@ public:
 		}
 
 	}
+
+	/// <summary>
+	/// Render text on screen, where position is center of text
+	/// </summary>
+	/// <param name="text"></param>
+	/// <param name="position"></param>
+	/// <param name="fontSize"></param>
+	void RenderCentered(char* text, GridVector position, double fontSize) {
+		SDL_Rect letterOutput{
+			position.x,
+			position.y,
+			character.w * fontSize,
+			character.h * fontSize
+		};
+
+		GridVector size;
+		size.x = strlen(text) * letterOutput.w;
+		size.y = letterOutput.h;
+
+		letterOutput.x -= size.x / 2;
+		letterOutput.y -= size.y / 2;
+
+		SDL_SetTextureColorMod(font, color.r, color.g, color.b);
+		GridVector offset = GridVector(0, 0);
+		int c;
+
+		while (*text) {
+			c = *text & 255;
+			character.x = (c % dimension.x) * character.w;
+			character.y = (c / dimension.y) * character.h;
+
+			SDL_RenderCopy(ScreenHandleler::getRenderer(), font, &character, &letterOutput);
+
+			letterOutput.x += letterOutput.w * letterSpacing;
+			text++;
+		}
+
+	}
 };

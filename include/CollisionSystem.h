@@ -24,8 +24,12 @@ ColliderComponent::ColliderComponent(int layer)
 	collider->component = this;
 }
 
-void ColliderComponent::SetCollider(int layer) {
+bool ColliderComponent::SetCollider(int layer) {
 	collisionCol = nullptr;
  	collider = ColliderManager.Get(layer);
+	if (collider == nullptr) {
+		return false;
+	}
 	collider->component = this;
+	return true;
 }

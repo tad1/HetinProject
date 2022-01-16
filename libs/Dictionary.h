@@ -12,7 +12,7 @@ struct MapElement {
 template <class TKey, class TValue>
 class Dictionary {
 private:
-	int alloc_size = 10;
+	int alloc_size = 20;
 	int size;
 	int count;
 
@@ -21,12 +21,13 @@ private:
 	void Expand() {
 		size += alloc_size;
 		MapElement<TKey, TValue>* temp = new MapElement<TKey, TValue>[size];
-		memcpy(temp, elements, count);
+		int elementSize = sizeof(TKey) + sizeof(TValue);
+		memcpy(temp, elements, elementSize * count);
 		delete[] elements;
 		elements = temp;
 	}
 public:
-	Dictionary(int allocation_size = 10) {
+	Dictionary(int allocation_size = 20) {
 		alloc_size = allocation_size;
 		size = alloc_size;
 		elements = new MapElement<TKey, TValue>[alloc_size];

@@ -14,7 +14,43 @@ class EnemyPlane : public Cannon {
 public:
 
 	void Update() {
-		Cannon::Update();
+		//update timers
+		shootTimer -= Time.deltaTime;
+		if (shootTimer < 0) {
+			shootTimer = 0;
+		}
+		patternTimer -= Time.deltaTime;
+		if (patternTimer < 0) {
+			patternTimer = 0;
+		}
+
+		if (target != nullptr) {
+			//Predict players position
+			Vector2 position = transform.WorldPosition();
+			Vector2 targetNextPosition = target->transform.position;
+			Vector2 distance = Vector2::Distance(position, targetNextPosition);
+
+			//Set angle
+			float angleDelta = atan2(distance.y, distance.x) - angle;
+			if (angleDelta < 0) {
+				angleDelta += radianConst;
+			}
+			angleDelta = angleDelta * Time.deltaTime * cannonSpeed;
+			angle += angleDelta;
+
+
+			//check if can shoot
+			if (shootTimer <= 0 && patternTimer <= 0) {
+				shootTimer += shootDelay;
+				shootsLeft--;
+				Shoot();
+
+				if (shootsLeft <= 0) {
+					shootsLeft += patternShoots;
+					patternTimer += patternDelay;
+				}
+			}
+		}
 
 		//Check collision
 		if (collider.collisionCol != nullptr) {
@@ -22,15 +58,13 @@ public:
 			collider.collisionCol = nullptr;
 		}
 
-		if (health <= 0) {
-			//Destory
-		}
 
 		//Set direction to predicted target next location, and shoot
 		shootDirection.x = cosf(angle);
 		shootDirection.y = sinf(angle);
-
-		physics->velocity = shootDirection * speed;
+		if (physics != nullptr) {
+			physics->velocity = shootDirection * speed;
+		}
 	}
 
 	void Damage(int value) {
@@ -49,11 +83,28 @@ public:
 		}
 	}
 
-	EnemyPlane() {
-		health = 5; //5 points
+	void Destroy() {
+		RigidbodyPool.Return(physics);
+		ColliderManager.Return(collider.collider, LAYER_ENEMY);
+		collider.collider = nullptr;
+		physics = nullptr;
+	}
+
+	bool isAlive() {
+		return health > 0;
+	}
+
+	bool Create() {
+		health = 3; //3 points
 		speed = 100.0f; //px per second
-		collider.SetCollider(LAYER_ENEMY);
-		
-		physics = RigidbodyPool.Get(this, &collider);
+		if (collider.SetCollider(LAYER_ENEMY)) {
+			physics = RigidbodyPool.Get(this, &collider);
+			return true;
+		}
+		return false;
+	}
+
+	EnemyPlane() {
+		cannonSpeed = 4;
 	}
 };
