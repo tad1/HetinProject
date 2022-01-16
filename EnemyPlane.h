@@ -19,7 +19,6 @@ public:
 		//Check collision
 		if (collider.collisionCol != nullptr) {
 			Damage(2);
-			Console.Log("Hit by player");
 			collider.collisionCol = nullptr;
 		}
 

@@ -183,8 +183,15 @@ private:
 
 		//render GUI
 		simpleFont.Render("SCORE", GridVector(860, 10), 3);
-		simpleFont.Render((char*) ToString(score), GridVector(890, 40), 2);
-		simpleFont.Render((char *)ConcatString(3,"TIME: ",ToString(GameTime),"s"), GridVector(100, 10), 2);
+
+		char* scoreText = ToString(score);
+		char* timeStr = ToString(GameTime);
+		char* timeText = ConcatString(3, "TIME: ", timeStr, "s");
+		simpleFont.Render(scoreText, GridVector(890, 40), 2);
+		simpleFont.Render(timeText, GridVector(100, 10), 2);
+		delete[] scoreText;
+		delete[] timeStr;
+		delete[] timeText;
 #if DRAW_COLLIDERS
 		ColliderManager.Draw();
 #endif // DRAW_COLLIDERS

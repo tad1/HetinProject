@@ -35,8 +35,8 @@ public:
 		frame.y %= frames.y;
 		frameSize.x = frame.x * frameSize.w;
 		frameSize.y = frame.y * frameSize.h;
-		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h }, NULL, NULL, SDL_FLIP_NONE);
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h };
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, NULL, NULL, SDL_FLIP_NONE);
 	}
 
 	/// <summary>
@@ -52,8 +52,9 @@ public:
 		frame.y %= frames.y;
 		frameSize.x = frame.x * frameSize.w;
 		frameSize.y = frame.y * frameSize.h;
-		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h }, angle, NULL, SDL_FLIP_NONE);
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h };
+
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, angle, NULL, SDL_FLIP_NONE);
 	}
 
 	/// <summary>
@@ -133,8 +134,8 @@ public:
 	/// <param name="position"></param>
 	void Render(GridVector position) {
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
-		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y });
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
+		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL, &destination);
 	}
 
 
@@ -147,8 +148,8 @@ public:
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		GridVector outputSize = spriteSize * scale;
 		renderPosition -= outputSize / 2;
-		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y });
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y };
+		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,&destination);
 	}
 
 	/// <summary>
@@ -159,8 +160,8 @@ public:
 	void RenderScaled(GridVector position, GridVector scale) {
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		GridVector outputSize = spriteSize * scale;
-		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y });
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y };
+		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL, &destination);
 	}
 
 	/// <summary>
@@ -170,7 +171,7 @@ public:
 	/// <param name="angle"> - degrees</param>
 	void Render(GridVector position, double angle) {
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
-		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL,
-			new SDL_Rect{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y },angle,NULL, SDL_FLIP_NONE);
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL, &destination,angle,NULL, SDL_FLIP_NONE);
 	}
 };

@@ -1,13 +1,14 @@
 ﻿// HetinProject.cpp: definiuje punkt wejścia dla aplikacji.
 //
 
-#include "HetinProject.h"
+#include "main.h"
 #include "include/GameObject.h"
 #include "include/ScreenHandleler.h"
 #include "TextureManager.h"
 #include "tests/tests.h"
 #include "ColorPalete.h"
 #include "Camera.h"
+#include <crtdbg.h>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ int main(int argc, char* argv[])
 	mainCamera.SetSize(ScreenHandleler::GetWindowSize());
 
 	game.start();
-	
+	_CrtDumpMemoryLeaks();
 
 	return 0;
 }
