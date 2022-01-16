@@ -1,6 +1,5 @@
 #pragma once
 #include "Object.h"
-#include "../libs/readOnly.h"
 #include "../Transform.h"
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +20,6 @@ public:
 		layer = 0;
 		transform.position = Vector2(0, 0);
 		transform.scale = Vector2(1, 1);
-		//transform.gameObject = this;
 		this->name = (char *)name;
 	}
 

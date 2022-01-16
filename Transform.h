@@ -1,6 +1,5 @@
 #pragma once
 #include "libs/Vector2.h"
-#include "libs/readOnly.h"
 #include "vector.h"
 #include "include/Component.h"
 
@@ -9,8 +8,14 @@
 
 class GameObject;
 
-class Transform{ //: public Component{
+/// <summary>
+/// Allow to track GameObject position, and scale
+/// </summary>
+class Transform{
 public:
+	/// <summary>
+	/// Relative position to parent
+	/// </summary>
 	Vector2 position;
 	Vector2 scale;
 
@@ -19,11 +24,18 @@ public:
 	Vector<Transform*> children;
 	int childCount;
 
+	/// <summary>
+	/// Moves position
+	/// </summary>
+	/// <param name="translation"></param>
 	void Translate(Vector2 translation) {
 		position += translation;
-		//for each children update position
 	}
 
+	/// <summary>
+	/// Get world position
+	/// </summary>
+	/// <returns></returns>
 	Vector2 WorldPosition() {
 		if (parent != nullptr) {
 			return parent->WorldPosition() + position;

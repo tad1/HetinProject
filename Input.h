@@ -2,7 +2,9 @@
 #include <SDL.h>
 #include <string.h>
 
-
+/// <summary>
+/// Class which handle keyboard input
+/// </summary>
 class Input_ {
 private:
 	Uint8* previousKeyState;
@@ -38,4 +40,5 @@ public:
 		delete[] previousKeyState;
 	}
 
-} Input;
+};
+static Input_ Input;

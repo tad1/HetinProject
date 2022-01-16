@@ -1,7 +1,10 @@
 #pragma once
 #include <cstring>
 
-
+/// <summary>
+/// Structure which allow to copy element instead of passing a reference
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template <class T>
 struct Copyable {
 	T value;
@@ -12,15 +15,14 @@ struct Copyable {
 	}
 
 	bool operator == (Copyable<T> arg) {
-		return this->value == arg.value;//memcmp(&value, &arg.value, sizeof(T));
+		return this->value == arg.value;
 	}
-
-
-	//Todo a type that will copy value char[20] instad copying reference
 };
 
 
-
+/// <summary>
+/// Structure which allow to copy array of chars instad of copy pointer
+/// </summary>
 template <int size>
 struct CopyableString {
 	char c_str[size];

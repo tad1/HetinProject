@@ -6,6 +6,9 @@
 class GameObject;
 class Transform;
 
+/// <summary>
+/// A base of all components in game
+/// </summary>
 class Component : public Object {
 public:
 

@@ -7,8 +7,12 @@
 #include "Cannon.h"
 
 
-//Ship have 11 frames
-class Enemy : public GameObject {
+//NOTE: Ship have 11 frames
+
+/// <summary>
+/// Not implemented class of enemy ship
+/// </summary>
+class EnemyShip : public GameObject {
 	ColliderComponent collider;
 	RigidbodyComponent* physics;
 	SpriteSheetAnimationRenderer spriteRenderer;

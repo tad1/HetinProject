@@ -12,6 +12,9 @@ public:
 	Transform* target;
 	Vector2 targetBorder;
 
+
+	/// <param name="position"></param>
+	/// <returns>position vector in pixels</returns>
 	Vector2 WorldToScreenPosition(Vector2 position) {
 		return position - transform.position + size;
 	}
@@ -28,9 +31,13 @@ public:
 
 	}
 
+	/// <summary>
+	/// Set camera size and target border in pixels
+	/// </summary>
+	/// <param name="size_"></param>
 	void SetSize(Vector2 size_) {
 		size = size_ / 2.0f;
-		targetBorder.x = 0.4 * size.x;
+		targetBorder.x = 0.4 * size.x; //target border should be around 1/4 height and width of the screen
 		targetBorder.y = 0.5 * size.y;
 	}
 

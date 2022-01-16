@@ -15,9 +15,10 @@ Game game;
 
 int main(int argc, char* argv[])
 {
-
+#if ENABLE_UNIT_TESTS
 	testAll();
-	ScreenHandleler::Initialize("Hetin",Vector2T<int>(1400,1000));
+#endif
+	ScreenHandleler::Initialize("Hetin",Vector2T<int>(1400,800));
 	ScreenHandleler::SetBackgroundColor(colors[colorNames::SECONDARY_COLOR]);
 	
 	mainCamera.SetSize(ScreenHandleler::GetWindowSize());
@@ -27,32 +28,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
-/*
-
-SDL_Init(SDL_INIT_VIDEO);
-
-	SDL_Window* window = nullptr;
-
-	window = SDL_CreateWindow("HetinProject", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
-
-	bool isRunning = true;
-	SDL_Event ev;
-
-	while (isRunning) {
-
-		while (SDL_PollEvent(&ev) != 0) {
-			if (ev.type == SDL_QUIT) {
-				isRunning = false;
-			}
-		}
-
-		SDL_UpdateWindowSurface(window);
-	}
-
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-
-*/

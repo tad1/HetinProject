@@ -3,7 +3,6 @@
 #include "PhysicsComponent.h"
 #include "include/CollisionSystem.h"
 #include "SpriteRendererComponent.h"
-#include "IDamageable.h"
 #include "Settings.h"
 
 //Bullet, the base of all BulletHells
@@ -88,6 +87,7 @@ public:
 			if (!this->inUse[i]) {
                 this->pool[i].col.SetCollider(layer);
 				if (this->pool[i].col.collider != nullptr) {
+					//If there is free collider create bullet
                     this->inUse[i] = true;
                     this->pool[i].position = position_;
                     this->pool[i].velocity = velocity_;

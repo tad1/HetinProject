@@ -50,13 +50,21 @@ public:
 		return wav;
 	}
 
-	~WAV_Loader_() {
+	/// <summary>
+	/// Free all WAVs buffers
+	/// </summary>
+	void DeleteAll() {
 		for (int i = 0; i < wavs.GetCount(); i++) {
 			SDL_FreeWAV(wavs.Get(i).wavBuffer);
 		}
+		wavs.Clear();
+	}
+
+	~WAV_Loader_() {
+		DeleteAll();
 	}
 };
-static WAV_File WAV_Loader;
+static WAV_Loader_ WAV_Loader;
 
 /// <summary>
 /// Manage audio devices and play loaded WAV files
@@ -90,6 +98,14 @@ public:
 			Console.Log("SDL_Audio: couldn't queue audio");
 		}
 		SDL_PauseAudioDevice(deviceId, 0);
+	}
+
+	/// <summary>
+	/// Clear audio queue, and pause playback
+	/// </summary>
+	void Stop() {
+		SDL_PauseAudioDevice(deviceId, 1);
+		SDL_ClearQueuedAudio(deviceId);
 	}
 };
 static SDL_Audio Audio;

@@ -1,6 +1,9 @@
 #pragma once
 #include <stdio.h>
 
+/// <summary>
+/// API that allow to easly print message
+/// </summary>
 class Console_ {
 public:
 	void Log(char* message) {

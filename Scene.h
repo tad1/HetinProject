@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// Representation of scene in game engine
+/// </summary>
 class Scene {
 	int buildIndex;
 	bool isLoaded;
