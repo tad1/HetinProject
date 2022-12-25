@@ -11,6 +11,8 @@ class EnemyPlane : public Cannon {
 	RigidbodyComponent* physics;
 	int health;
 	float speed;
+	float playerHitMaxTime, playerHitTimer;
+
 public:
 
 	void Update() {
@@ -53,8 +55,18 @@ public:
 		}
 
 		//Check collision
+		playerHitTimer -= Time.deltaTime;
 		if (collider.collisionCol != nullptr) {
-			Damage(2);
+			if (collider.collisionCol->CompareTag("Player")) {
+				//check timer
+				if (playerHitTimer < 0) {
+					playerHitTimer = playerHitMaxTime;
+					Damage(2);
+				}
+			}
+			else {
+				Damage(2);
+			}
 			collider.collisionCol = nullptr;
 		}
 
@@ -95,6 +107,10 @@ public:
 	}
 
 	bool Create() {
+
+		playerHitMaxTime = 0.3f; //0.3s
+		playerHitTimer = playerHitMaxTime;
+
 		health = 3; //3 points
 		speed = 100.0f; //px per second
 		if (collider.SetCollider(LAYER_ENEMY)) {
@@ -102,6 +118,10 @@ public:
 			return true;
 		}
 		return false;
+	}
+
+	void Render() {
+		sprite.RenderCentered(transform.WorldPosition(), angle * radianConst, true, true);
 	}
 
 	EnemyPlane() {

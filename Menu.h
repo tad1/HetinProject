@@ -6,12 +6,14 @@
 #include "ColorPalete.h"
 #include "include/SDL_Audio.h"
 #include "Settings.h"
+#include "include/MonoBechaviour.h"
 
-class Menu : public GameObject {
+class Menu : public MonoBechaviour {
 private:
 	bool isOpened;
 	TextRenderer renderer;
 public:
+
 
 	void Init(char* font_path) {
 		renderer.Load(font_path);
@@ -20,17 +22,22 @@ public:
 		Time.setTimeScale(0.0f);
 	}
 
-	void Update(WAV_File soundtrack) {
+	void Awake() override {
+		Init("./assets/sprites/font.bmp");
+		Show();
+	}
+
+	void Update() override{
 		if (Input.isKeyJustPressed(SDL_SCANCODE_UP)) {
 			Hide();
 			Time.setTimeScale(1.0f);
 #if !(DISABLE_AUDIO)
-			Audio.Play(soundtrack);
+			Audio.Resume();
 #endif
 		}
 	}
 
-	void Render() {
+	void Render() override{
 		renderer.RenderCentered("Hetin", GridVector(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 22);
 		renderer.RenderCentered("UP - new game", GridVector(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100), 4);
 		renderer.RenderCentered("ESC - quit", GridVector(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150), 4);
@@ -49,4 +56,5 @@ public:
 	bool isActive() {
 		return isOpened;
 	}
+
 };

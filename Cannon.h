@@ -97,7 +97,7 @@ public:
 	}
 
 	void Render() {
-		sprite.Render(transform.WorldPosition(), angle * radianConst);
+		sprite.RenderCentered(transform.WorldPosition(), angle * radianConst, false, true);
 	}
 
 	void Shoot() {

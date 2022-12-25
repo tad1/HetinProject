@@ -24,6 +24,11 @@ public:
 	}
 	ColliderComponent(int layer);
 
+	bool CompareTag(char* tag) {
+		if (gameObject == nullptr) return false;
+		return strcmp(gameObject->tag, tag) == 0;
+	}
+
 	/// <summary>
 	/// Setup collider for given layer
 	/// </summary>

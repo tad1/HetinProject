@@ -37,6 +37,8 @@ public:
 		frameSize.y = frame.y * frameSize.h;
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h };
 		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, NULL, NULL, SDL_FLIP_NONE);
+		RenderReflection(position, frame, 0);
+
 	}
 
 	/// <summary>
@@ -51,6 +53,7 @@ public:
 		frameSize.y = frame.y * frameSize.h;
 		SDL_Rect destination{ position.x, position.y, frameSize.w,frameSize.h };
 		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, NULL, NULL, SDL_FLIP_NONE);
+	
 	}
 
 	/// <summary>
@@ -69,6 +72,27 @@ public:
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h };
 
 		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, angle, NULL, SDL_FLIP_NONE);
+		RenderReflection(position, frame, angle);
+	}
+
+
+	void RenderReflection(GridVector position, GridVector frame, double angle) {
+		//TODO: render reflection on different renderer
+		position.y = (LEVEL_HEIGHT - SEA_LEVEL - position.y);
+		position.y = clamp<int>(position.y, 0, position.y) + LEVEL_HEIGHT - SEA_LEVEL;
+		if (position.y - frameSize.h < LEVEL_HEIGHT - SEA_LEVEL) return;
+
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		renderPosition.y -= frameSize.h;
+		frameSize.x = frame.x * frameSize.w;
+		frameSize.y = frame.y * frameSize.h;
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, frameSize.w,frameSize.h };
+		SDL_RendererFlip flip = (SDL_RendererFlip)(SDL_FLIP_VERTICAL);
+		angle = -angle;
+		Color(SDL_Color{ 0xFF,0xFF,0xFF,0x88 });
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), spritesheet, &frameSize, &destination, angle, NULL, flip);
+		Color(SDL_Color{ 0xFF,0xFF,0xFF,0xFF });
+
 	}
 
 	/// <summary>
@@ -150,6 +174,8 @@ public:
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
 		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL, &destination);
+		RenderReflection(position, GridVector(1, 1), 0);
+
 	}
 
 
@@ -164,6 +190,9 @@ public:
 		renderPosition -= outputSize / 2;
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y };
 		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL,&destination);
+		RenderReflection(position, GridVector(1, 1), 0);
+
+
 	}
 
 	/// <summary>
@@ -176,6 +205,8 @@ public:
 		GridVector outputSize = spriteSize * scale;
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, outputSize.x,outputSize.y };
 		SDL_RenderCopy(ScreenHandleler::getRenderer(), sprite, NULL, &destination);
+		RenderReflection(position, GridVector(1, 1), 0);
+
 	}
 
 	/// <summary>
@@ -186,6 +217,28 @@ public:
 	void Render(GridVector position, double angle) {
 		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
 		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
-		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL, &destination,angle,NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL, &destination, angle, NULL, SDL_FLIP_NONE);
+		RenderReflection(position, GridVector(1, 1), angle);
+	}
+
+	void RenderCentered(GridVector position, double angle, bool centerX = true, bool centerY = true) {
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
+		SDL_Point center = { centerX ? destination.w / 2 : 0, centerY ? destination.h / 2 : 0 };
+		
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL, &destination, angle, &center, SDL_FLIP_NONE);
+		RenderReflection(position, GridVector(1, 1), angle);
+
+	}
+
+	void RenderReflection(GridVector position, GridVector scale, double angle){
+		position.y = (LEVEL_HEIGHT - SEA_LEVEL - position.y) + LEVEL_HEIGHT - SEA_LEVEL;
+		if (position.y - spriteSize.y < LEVEL_HEIGHT - SEA_LEVEL) return;
+		GridVector renderPosition = mainCamera.WorldToScreenPosition(position);
+		renderPosition.y -= spriteSize.y;
+		SDL_Rect destination{ renderPosition.x, renderPosition.y, spriteSize.x,spriteSize.y };
+		Color(SDL_Color{ 0xFF,0xFF,0xFF,0x88 });
+		SDL_RenderCopyEx(ScreenHandleler::getRenderer(), sprite, NULL, &destination, -angle, NULL, SDL_FLIP_VERTICAL);
+		Color(SDL_Color{ 0xFF,0xFF,0xFF,0xFF });
 	}
 };

@@ -184,7 +184,7 @@ public:
 		collisionPrecision clampedY = b.circle.y < a.rect.y ? a.rect.y : (b.circle.y < a.rect.y + a.rect.h ? b.circle.y : a.rect.y + a.rect.h);
 
 		if ((clampedX != a.rect.x && clampedX != a.rect.x + a.rect.w)
-			|| (clampedY != a.rect.y && clampedY != a.rect.y + a.rect.h)) {
+			&& (clampedY != a.rect.y && clampedY != a.rect.y + a.rect.h)) {
 			return true;
 		}
 		collisionPrecision x = b.circle.x - clampedX;

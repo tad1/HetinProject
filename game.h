@@ -26,9 +26,10 @@ private:
 
 	ParticleSystem<1> gradeParticle;
 
-	Menu mainMenu;
+	Menu* mainMenu;
 	Player player;
 	EnemyPlaneSpawner enemySpawner;
+	EnemyShipSpawner shipSpawner;
 	SpriteRenderer healthBackground;
 	SpriteRenderer sea;
 	WAV_File soundtrack;
@@ -85,10 +86,13 @@ private:
 	/// </summary>
 	void init() {
 		ScreenHandleler::SetBackgroundColor(colors[SECONDARY_COLOR]);
-		mainMenu.Init("./assets/sprites/font.bmp");
+		mainMenu = new Menu();
+		mainMenu->Awake();
 
 #if !(DISABLE_AUDIO)
 		soundtrack = WAV_Loader.Add("./assets/music/luft.wav");
+		Audio.Play(soundtrack);
+		Audio.Pause();
 #endif
 
 		gradeParticle.Load("./assets/sprites/grade.bmp", 5);
@@ -96,7 +100,7 @@ private:
 
 		explosions.Load("./assets/sprites/boom.bmp", 7);
 
-		playerBullets.sprite.Load("./assets/sprites/bullet.bmp");
+		playerBullets.sprite.Load("./assets/sprites/pbullet.bmp");
 		enemyBullets.sprite.Load("./assets/sprites/bullet.bmp");
 
 		healthBackground.Load("./assets/sprites/white.bmp");
@@ -108,7 +112,7 @@ private:
 
 		enemySpawner.Init("./assets/sprites/eplane.bmp", &player, 2.0f);
 		// Shoot with 1s delay, with no pattern delay; bullet speed is 200px per second
-
+		shipSpawner.Init(&player);
 
 
 		backgroundClouds.Init("./assets/sprites/bgclouds.bmp", 9); //9 types of clouds on spritesheet
@@ -120,7 +124,7 @@ private:
 
 		simpleFont.Load("./assets/sprites/font.bmp");
 		simpleFont.SetColor(colors[colorNames::PRIMARY_COLOR]);
-		mainCamera.target = &player.transform;
+		mainCamera.target = &player;
 		playing = true;
 
 
@@ -153,13 +157,14 @@ private:
 		player.Update();
 
 		enemySpawner.Update();
+		shipSpawner.Update();
 
 		backgroundClouds.Update();
 		midgroundClouds.Update();
 		mainCamera.Update();
 
-		if (mainMenu.isActive()) {
-			mainMenu.Update(soundtrack);
+		if (mainMenu->isActive()) {
+			mainMenu->Update();
 		}
 	}
 
@@ -174,8 +179,9 @@ private:
 
 		midgroundClouds.Render();
 
-		if (!mainMenu.isActive()) {
+		if (!mainMenu->isActive()) {
 			//render all objects from the render list
+			shipSpawner.Render();
 			enemySpawner.Render();
 			player.Render();
 			explosions.Animate();
@@ -185,12 +191,12 @@ private:
 		playerBullets.Render();
 		enemyBullets.Render();
 
-		sea.RenderScaled(Vector2(0, LEVEL_HEIGHT - SEA_LEVEL), GridVector(LEVEL_WIDTH, 6));
+		//sea.RenderScaled(Vector2(0, LEVEL_HEIGHT - SEA_LEVEL), GridVector(LEVEL_WIDTH, 6));
 
 
 		//render GUI
-		if (mainMenu.isActive()) {
-			mainMenu.Render();
+		if (mainMenu->isActive()) {
+			mainMenu->Render();
 		}
 		else {
 
@@ -294,7 +300,5 @@ private:
 		player.Init();
 
 	}
-
-
 
 };

@@ -15,7 +15,7 @@ struct Bullet{
 /// <summary>
 /// Semi-selfcare object pool for bullets
 /// </summary>
-template <int layerId, int size>
+template <int layerId, const int size>
 class BulletPool : public GenericPool<Bullet,size>{
 public:
 	SpriteRenderer sprite;

@@ -4,6 +4,10 @@
 #include "SpriteRendererComponent.h"
 #include "PhysicsComponent.h"
 #include "Projectiles.h"
+#include "include/SDL_Audio.h"
+#include "Input.h"
+#include "libs/Random.h"
+#include "Camera.h"
 #include "Score.h"
 
 /// <summary>
@@ -15,9 +19,15 @@ class Player : public GameObject {
 
 	SpriteSheetAnimationRenderer spriteRenderer;
 	SpriteRenderer healthSprite;
+	TextRenderer gameover;
 
 	Vector2 frame, acceleration, direction;
 	Vector2 startingPosition;
+
+	const int shootSFXCount = 3;
+	WAV_File shoot[3];
+
+
 
 	float maxSpeed;
 	float bulletSpeed;
@@ -58,7 +68,7 @@ public:
 		if (Input.isKeyPressed(SDL_SCANCODE_W)
 			|| Input.isKeyPressed(SDL_SCANCODE_UP)) {
 			acceleration += direction;
-			acceleration = acceleration.Normalize() * 3;
+			acceleration = acceleration.Normalize() * 6;
 		}
 
 		//Rotation handle
@@ -109,14 +119,18 @@ public:
 			frame = GridVector(3, 0);
 		}
 
+		if (hp <= 0) {
+			Time.setTimeScale(0);
+
+		}
 
 
 	}
 
 	void PhysicsUpdate() {
-		Vector2 moment = acceleration * 10000.0f * Time.fixedDeltaTime;
+		Vector2 moment = (acceleration * 4) * 1000.0f * Time.fixedDeltaTime;
 		//add gravity to velocity
-		moment += (Vector2)gravity * 1300.0f * Time.fixedDeltaTime;
+		moment += (Vector2)(gravity) * (gravity) * 100 * Time.fixedDeltaTime;
 		physics->velocity += moment;
 
 		float speed = clamp<float>(physics->velocity.Magnitude(), 0, maxSpeed);
@@ -130,7 +144,13 @@ public:
 	void Init() {
 
 		spriteRenderer.Load("./assets/sprites/plane.bmp", GridVector(4, 1)); //4 frames of animation
+		gameover.Load("./assets/sprites/font.bmp");
+		gameover.SetColor(colors[colorNames::PRIMARY_COLOR]);
 		healthSprite.Load("./assets/sprites/health.bmp");
+		shoot[0] = WAV_Loader.Add("./assets/music/shoot1.wav");
+		shoot[1] = WAV_Loader.Add("./assets/music/shoot2.wav");
+		shoot[2] = WAV_Loader.Add("./assets/music/shoot3.wav");
+
 	}
 
 	void Reset() {
@@ -149,6 +169,9 @@ public:
 
 	void Render() {
 		spriteRenderer.Render(transform.position, frame, angle * radianConst);
+		if (hp <= 0) {
+			gameover.RenderCentered("GAME OVER", GridVector(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 12);
+		}
 	}
 
 	void RenderHealth() {
@@ -161,13 +184,17 @@ public:
 	}
 
 	void onDamage(float value) {
-		hp -= value;
+		//hp -= value;
 	}
 
 	void Shoot() {
 		Vector2 position = transform.position + direction * 2;
+		position += Vector2(Random::Number(10), Random::Number(10));
 		Vector2 velocity = physics->velocity + (direction * bulletSpeed);
  		int success = playerBullets.Projectile(position, velocity);
+
+		int index = Random::Number(shootSFXCount);
+		Audio.PlaySFX(shoot[index]);
 	}
 
 	Vector2 getVelocity() {
@@ -175,21 +202,23 @@ public:
 	}
 
 	Player() {
+		strcpy(tag, "Player");
 		collider.SetCollider(LAYER_PLAYER);
-		startingPosition = Vector2(3000, 1800);
+		startingPosition = Vector2(3000, LEVEL_HEIGHT- SEA_LEVEL);
 		angle = -M_PI/2; //-90 deg in radians
 		frame = GridVector(0, 0); //starting frame
 		maxSpeed = 200.0f; //px per second
 		maxInvicibleTime = 0.3f; //seconds
-		maxReloadTime = 0.3f; //seconds
-		hp = maxHp = 10.0f; //hit point
-		bulletSpeed = 300.0f; //px per second
+		maxReloadTime = 0.2f; //seconds
+		hp = maxHp = 12.0f; //hit point
+		bulletSpeed = 500.0f; //px per second
 		transform.position = startingPosition;
 
 		direction = Vector2(0, -10); //px per second
 		acceleration = Vector2(0, -3); //px per second^2
 
 		collider.offset = Vector2(12, 12); //hardcoded collider offset - px
+		collider.gameObject = this;
 		Vector2 position = transform.position + collider.offset;
 		Collider col;
 

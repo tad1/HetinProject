@@ -44,7 +44,7 @@ public:
 	}
 
 	void SetParent(Transform& obj) {
-		assert(obj.parent != nullptr);
+		assert(obj.parent == nullptr);
 		obj.children.push_back(this);
 		obj.childCount++;
 		this->parent = &obj;

@@ -73,11 +73,13 @@ class SDL_Audio {
 	SDL_AudioDeviceID deviceId;
 	SDL_AudioSpec currentWavSpec;
 
+	WAV_File music;
+
 public:
 	SDL_Audio() {
 		SDL_Init(SDL_INIT_AUDIO);
 		deviceId = NULL;
-
+		music.wavBuffer = nullptr;
 	}
 
 	~SDL_Audio() {
@@ -97,6 +99,25 @@ public:
 		if (SDL_QueueAudio(deviceId, wav.wavBuffer, wav.wavLenght)) {
 			Console.Log("SDL_Audio: couldn't queue audio");
 		}
+		music = wav;
+		SDL_PauseAudioDevice(deviceId, 0);
+	}
+
+	void PlaySFX(WAV_File wav) {
+		if (music.wavBuffer == nullptr) return;
+		Uint32 size = SDL_GetQueuedAudioSize(deviceId);
+		SDL_ClearQueuedAudio(deviceId);
+		Uint8* ptr = music.wavBuffer + music.wavLenght - size;
+		SDL_MixAudioFormat(ptr, wav.wavBuffer, AUDIO_S16, wav.wavLenght, SDL_MIX_MAXVOLUME / 2);
+		SDL_QueueAudio(deviceId, ptr, size);
+		SDL_PauseAudioDevice(deviceId, 0);
+	}
+
+	void Pause() {
+		SDL_PauseAudioDevice(deviceId, 1);
+	}
+
+	void Resume() {
 		SDL_PauseAudioDevice(deviceId, 0);
 	}
 

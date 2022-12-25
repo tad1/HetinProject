@@ -14,6 +14,22 @@ using namespace std;
 
 Game game;
 
+
+void Camera::Update()
+{
+	//Follow target
+	if (target) {
+		Vector2 targetPosition = target->transform.position;
+		transform.position = targetPosition;
+		//transform.position -= target->getVelocity() * Time.deltaTime * 10;
+	}
+	//Clamp
+	transform.position.x = clamp<float>(transform.position.x, size.x, LEVEL_WIDTH - size.x);
+	transform.position.y = clamp<float>(transform.position.y, size.y, LEVEL_HEIGHT - size.y);
+
+}
+
+
 int main(int argc, char* argv[])
 {
 #if ENABLE_UNIT_TESTS

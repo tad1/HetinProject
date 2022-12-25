@@ -5,12 +5,16 @@
 #include "include/ScreenHandleler.h"
 #include "Settings.h"
 #include "libs/Math.h"
+#include "Time.h"
+
+class Player;
 
 class Camera : public GameObject{
 public:
 	Vector2 size;
-	Transform* target;
+	Player* target;
 	Vector2 targetBorder;
+	Vector2 lastTargetPosition;
 
 
 	/// <param name="position"></param>
@@ -19,17 +23,7 @@ public:
 		return position - transform.position + size;
 	}
 
-	void Update() {
-		//Follow target
-		if (target) {
-			transform.position = target->position;
-		}
-		//Clamp
-		transform.position.x = clamp<float>(transform.position.x, size.x, LEVEL_WIDTH - size.x);
-		transform.position.y = clamp<float>(transform.position.y, size.y, LEVEL_HEIGHT - size.y);
-
-
-	}
+	void Update();
 
 	/// <summary>
 	/// Set camera size and target border in pixels
@@ -37,8 +31,8 @@ public:
 	/// <param name="size_"></param>
 	void SetSize(Vector2 size_) {
 		size = size_ / 2.0f;
-		targetBorder.x = 0.4 * size.x; //target border should be around 1/4 height and width of the screen
-		targetBorder.y = 0.5 * size.y;
+		targetBorder.x = 0.8 * size.x/2; //target border should be around 1/4 height and width of the screen
+		targetBorder.y = 0.8 * size.y/2;
 	}
 
 	Camera() {

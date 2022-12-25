@@ -38,7 +38,7 @@ public:
 /// <summary>
 /// Selfcare RigidBodyComponent object pool
 /// </summary>
-class RigidbodyComponentPool : public GenericPool<RigidbodyComponent, 1000> {
+class RigidbodyComponentPool : public GenericPool<RigidbodyComponent, 2000> {
 public:
 	RigidbodyComponent* Get(GameObject* instance, ColliderComponent* collider_ = nullptr) {
 		for (int i = 0; i < POOL_SIZE; i++) {
