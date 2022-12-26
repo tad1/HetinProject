@@ -12,3 +12,4 @@ Let me present Hetin, a game (highly) inspired by [LUFTRAUSERS](https://store.st
 
 #### Note:
 I abandoned this project after getting a credit.
+![output](https://user-images.githubusercontent.com/47014347/209579912-68d35008-b034-4281-a23b-4b5e7faa8b36.gif)
