@@ -12,7 +12,7 @@
 /// <returns></returns>
 SDL_Texture* loadBMPTexture(const char* path);
 
-typedef CopyableString<30> texturePath;
+typedef CopyableString<50> texturePath;
 
 /// <summary>
 /// Loads textures, if is not already loaded, and return texture pointer.
