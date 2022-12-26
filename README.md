@@ -1,7 +1,7 @@
 # HetinProject
 
 Imagine that you have a college assignment to make 2D bullet hell.
-To your disposal, you have C++ 14 and SDL2 library.
+To your disposal, you have C++ 14 and SDL2 library. </br>
 If you are a lazy and experienced game developer, you definitely will write a game engine first. And then use it for this project.
 And it happens that I'm one of these kinds of people.
 
