@@ -143,7 +143,7 @@ public:
 
 	void Init() {
 
-		spriteRenderer.Load("./assets/sprites/plane.bmp", GridVector(4, 1)); //4 frames of animation
+		spriteRenderer.Load("./assets/sprites/plane_spritesheet.bmp", GridVector(4, 1)); //4 frames of animation
 		gameover.Load("./assets/sprites/font.bmp");
 		gameover.SetColor(colors[colorNames::PRIMARY_COLOR]);
 		healthSprite.Load("./assets/sprites/health.bmp");
