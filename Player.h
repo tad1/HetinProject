@@ -184,7 +184,7 @@ public:
 	}
 
 	void onDamage(float value) {
-		//hp -= value;
+		hp -= value;
 	}
 
 	void Shoot() {
