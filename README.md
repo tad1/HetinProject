@@ -7,9 +7,8 @@ And it happens that I'm one of these kinds of people.
 
 Let me present Hetin, a game (highly) inspired by [LUFTRAUSERS](https://store.steampowered.com/app/233150/LUFTRAUSERS). But you have only one weapon, the physics is woody, and the enemies are twice as dumb.. just play Luftrausers instead.
 
-![output.webm](https://user-images.githubusercontent.com/47014347/209572554-f75b6176-196e-42a7-b0e8-c1d2c2d27f19.webm)
 ![HetinSlice](https://user-images.githubusercontent.com/47014347/209566564-cce21f6f-6e58-4f02-b0b1-b6b8aa1c22ff.png)
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uy24C1N1wrs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 #### Note:
 I abandoned this project after getting a credit.
-![output](https://user-images.githubusercontent.com/47014347/209579912-68d35008-b034-4281-a23b-4b5e7faa8b36.gif)
