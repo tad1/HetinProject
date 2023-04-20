@@ -1,10 +1,10 @@
 #pragma once
 #include "include/GameObject.h"
-#include "libs/Vector2.h"
+#include "include/Vector2.h"
 #include "Transform.h"
 #include "include/ScreenHandleler.h"
 #include "Settings.h"
-#include "libs/Math.h"
+#include "include/Math.h"
 #include "Time.h"
 
 class Player;

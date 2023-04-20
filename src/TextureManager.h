@@ -1,7 +1,7 @@
 #pragma once
-#include "libs/Dictionary.h"
+#include "include/Dictionary.h"
 #include "include/ScreenHandleler.h"
-#include "libs/Copyable.h"
+#include "include/Copyable.h"
 #include <stdio.h>
 #include <SDL.h>
 
@@ -12,7 +12,7 @@
 /// <returns></returns>
 SDL_Texture* loadBMPTexture(const char* path);
 
-typedef CopyableString<50> texturePath;
+typedef CopyableString<255> texturePath;
 
 /// <summary>
 /// Loads textures, if is not already loaded, and return texture pointer.

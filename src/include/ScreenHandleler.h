@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/Vector2.h"
+#include "../include/Vector2.h"
 #include <SDL.h>
 
 /// <summary>

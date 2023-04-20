@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/MyString.h"
+#include "../include/MyString.h"
 
 
 class Object : public IStringable{

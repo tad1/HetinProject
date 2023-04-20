@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 #include <assert.h>
-#include "../libs/Copyable.h"
-#include "../HotMemory.h"
-#include "../include/CollisionSystem.h"
+#include "include/Copyable.h"
+#include "HotMemory.h"
+#include "include/CollisionSystem.h"
 
 bool copyableTest() {
 	//test1

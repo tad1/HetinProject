@@ -1,10 +1,10 @@
 #pragma once
 #include <SDL.h>
-#include "../libs/Dictionary.h"
-#include "../libs/Copyable.h"
+#include "../include/Dictionary.h"
+#include "../include/Copyable.h"
 #include "../Console.h"
 
-typedef CopyableString<40> audioPath;
+typedef CopyableString<255> audioPath;
 
 struct WAV_File {
 	SDL_AudioSpec wavSpec;

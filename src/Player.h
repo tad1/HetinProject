@@ -6,7 +6,7 @@
 #include "Projectiles.h"
 #include "include/SDL_Audio.h"
 #include "Input.h"
-#include "libs/Random.h"
+#include "include/Random.h"
 #include "Camera.h"
 #include "Score.h"
 

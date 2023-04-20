@@ -5,7 +5,7 @@
 #include "include/GameObject.h"
 #include "include/ScreenHandleler.h"
 #include "TextureManager.h"
-#include "tests/tests.h"
+#include "../tests/tests.h"
 #include "ColorPalete.h"
 #include "Camera.h"
 #include "ParticleSystem.h"

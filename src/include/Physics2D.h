@@ -1,4 +1,4 @@
 #pragma once
-#include "../libs/Vector2.h"
+#include "include/Vector2.h"
 
 const Vector2 gravity(0, 9.81f);

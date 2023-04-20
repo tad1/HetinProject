@@ -29,7 +29,16 @@ public:
     //void insert(T value, unsigned int index);
 
     T operator[] (int);
+	T* begin() {
+		return elements;
+	}
+
+	T* end() {
+		return elements + count;
+	}
 };
+
+
 
 
 template<class T>

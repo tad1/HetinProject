@@ -1,8 +1,8 @@
 #pragma once
 #include "include/GenericPool.h"
-#include "libs/Vector2.h"
+#include "include/Vector2.h"
 #include "SpriteRendererComponent.h"
-#include "libs/Random.h"
+#include "include/Random.h"
 #include "Settings.h"
 #include "ColorPalete.h"
 

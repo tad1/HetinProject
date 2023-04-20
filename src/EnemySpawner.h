@@ -5,7 +5,7 @@
 #include "Time.h"
 #include "Player.h"
 #include "ParticleSystem.h"
-#include "libs/Random.h"
+#include "include/Random.h"
 #include "Camera.h"
 #include "Score.h"
 #include "include/SDL_Audio.h"

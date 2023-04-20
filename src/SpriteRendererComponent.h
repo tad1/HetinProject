@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "include/Component.h"
 #include "TextureManager.h"
-#include "libs/Vector2.h"
+#include "include/Vector2.h"
 #include "Camera.h"
 
 /// <summary>
